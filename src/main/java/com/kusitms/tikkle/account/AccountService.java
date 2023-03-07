@@ -28,4 +28,8 @@ public class AccountService {
         String token = jwtTokenProvider.createToken(account.getEmail(), account.getRole());
         return new LoginResponse("SignIn", account, token);
     }
+
+    public boolean checkNicknameDuplicate(String nickname) {
+        return accountRepository.existsByNickname(nickname);
+    }
 }
