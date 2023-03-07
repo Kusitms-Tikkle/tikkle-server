@@ -34,12 +34,12 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Make application-prod.yml
+      - name: Make application-prod.properties
         if: contains(github.ref, 'main') # branch가 main 일 때
         run: |
           cd ./src/main/resources
-          touch ./application-prod.yml
-          echo "${{ secrets.APPLICATION }}" > ./application-prod.yml
+          touch ./application-prod.properties
+          echo "${{ secrets.APPLICATION }}" > ./application-prod.properties
         shell: bash
 
       - name: Build with Gradle
