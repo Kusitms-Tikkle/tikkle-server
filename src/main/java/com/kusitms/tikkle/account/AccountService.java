@@ -3,6 +3,7 @@ package com.kusitms.tikkle.account;
 import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.Account;
+import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.configure.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class AccountService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public LoginResponse setExtraInfo(Long id, LoginRequest request) {
-        Optional<Account> byId = accountRepository.findById(id);
+        Optional<Account> byId = accountRepository.findByIdAndStatus(id, Status.VALID);
 
         Account account = null;
         if(byId.isPresent()) account = byId.get();
@@ -30,6 +31,10 @@ public class AccountService {
     }
 
     public boolean checkNicknameDuplicate(String nickname) {
-        return accountRepository.existsByNickname(nickname);
+        Optional<Account> accountOptional = accountRepository.findByNicknameAndStatus(nickname, Status.VALID);
+        if (accountOptional.isPresent())
+            return true;
+        else
+            return false;
     }
 }

@@ -2,6 +2,7 @@ package com.kusitms.tikkle.account.entity;
 
 import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
+import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
@@ -45,6 +49,7 @@ public class Account {
                 .email(email)
                 .oAuthNickName(nickname)
                 .role(RoleType.ROLE_USER)
+                .status(Status.VALID)
                 .build();
     }
 }
