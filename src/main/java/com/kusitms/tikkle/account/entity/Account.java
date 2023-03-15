@@ -52,4 +52,8 @@ public class Account {
                 .status(Status.VALID)
                 .build();
     }
+
+    public void toggleValid() {
+        if(this.status.equals(Status.VALID)) this.status = Status.DELETED;
+    }
 }

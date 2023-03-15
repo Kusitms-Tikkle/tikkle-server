@@ -4,6 +4,9 @@ import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.Account;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
+import com.kusitms.tikkle.configure.response.exception.CustomException;
+import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
+import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
 import com.kusitms.tikkle.configure.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Transactional
     public LoginResponse setExtraInfo(Long id, LoginRequest request) {
         Optional<Account> byId = accountRepository.findByIdAndStatus(id, Status.VALID);
 
@@ -36,5 +40,12 @@ public class AccountService {
             return true;
         else
             return false;
+    }
+
+    @Transactional
+    public void toggleAccountValidation(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        account.toggleValid();
     }
 }
