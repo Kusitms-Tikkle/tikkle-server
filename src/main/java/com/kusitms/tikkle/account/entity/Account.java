@@ -54,5 +54,6 @@ public class Account {
     public void toggleValid(Status status) {
         if(this.status.equals(Status.VALID) && status.equals(Status.DELETED)) this.status = Status.DELETED;
         if(this.status.equals(Status.VALID) && status.equals(Status.LOGOUT)) this.status = Status.LOGOUT;
+        if(this.status.equals(Status.LOGOUT)) this.status = status;
     }
 }
