@@ -2,6 +2,7 @@ package com.kusitms.tikkle.account;
 
 import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
+import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.configure.response.CommonResponse;
 import com.kusitms.tikkle.configure.response.DataResponse;
 import com.kusitms.tikkle.configure.response.ResponseService;
@@ -30,8 +31,14 @@ public class AccountController {
     }
 
     @PatchMapping("/accounts/delete")
-    public CommonResponse toggleAccountValidation(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        accountService.toggleAccountValidation(customUserDetails);
+    public CommonResponse toggleAccountValidationAsDelete(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        accountService.toggleAccountValidation(customUserDetails, Status.DELETED);
+        return responseService.getSuccessResponse();
+    }
+
+    @PatchMapping("/accounts/log-out")
+    public CommonResponse toggleAccountValidationAsLogout(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        accountService.toggleAccountValidation(customUserDetails, Status.LOGOUT);
         return responseService.getSuccessResponse();
     }
 }

@@ -48,12 +48,11 @@ public class Account {
                 .oAuthId(oAuthId)
                 .email(email)
                 .oAuthNickName(nickname)
-                .role(RoleType.ROLE_USER)
-                .status(Status.VALID)
                 .build();
     }
 
-    public void toggleValid() {
-        if(this.status.equals(Status.VALID)) this.status = Status.DELETED;
+    public void toggleValid(Status status) {
+        if(this.status.equals(Status.VALID) && status.equals(Status.DELETED)) this.status = Status.DELETED;
+        if(this.status.equals(Status.VALID) && status.equals(Status.LOGOUT)) this.status = Status.LOGOUT;
     }
 }
