@@ -3,6 +3,7 @@ package com.kusitms.tikkle.account.oAuth;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.Account;
 import com.kusitms.tikkle.account.AccountRepository;
+import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.security.jwt.JwtTokenProvider;
@@ -32,6 +33,8 @@ public class OAuthService {
         Account account = checkLogin.getAccount();
         if (checkLogin.registered) {
             String accessToken = jwtTokenProvider.createToken(account.getEmail(), account.getRole());
+            //로그아웃한 사용자는 Status.valid로 변환
+            if (account.getStatus() == Status.LOGOUT) account.toggleValid(Status.VALID);
             return new LoginResponse("signIn", account, accessToken);
         } else{
             return new LoginResponse("signUp", account, null);
@@ -54,7 +57,7 @@ public class OAuthService {
             account = byKakaoId.get();
             registered = true;
         } else{
-            Account newAccount = newAccount = Account.createAccount(kakao_id, email, kakao_nickname);
+            Account newAccount = Account.createAccount(kakao_id, email, kakao_nickname);
             Account save = accountRepository.save(newAccount);
             account = save;
         }
