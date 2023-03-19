@@ -15,6 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByoAuthId(String oAuthId);
     Optional<Account> findByNickname(String nickname);
     Optional<Account> findByEmailAndStatus(String email, Status valid);
+    Optional<Account> findByEmail(String email);
 
     @Modifying
     @Query(value = "UPDATE account a SET " +
