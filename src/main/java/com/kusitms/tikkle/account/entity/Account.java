@@ -1,5 +1,6 @@
 package com.kusitms.tikkle.account.entity;
 
+import com.kusitms.tikkle.account.dto.AccountInformReq;
 import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
@@ -39,7 +40,9 @@ public class Account {
 
     private String nickname;
 
-    private int profileImageIndex;
+    private Integer mbti;
+
+    private Integer profileImageIndex;
 
     private boolean isChecked;
 
@@ -56,4 +59,13 @@ public class Account {
         if(this.status.equals(Status.VALID) && status.equals(Status.LOGOUT)) this.status = Status.LOGOUT;
         if(this.status.equals(Status.LOGOUT)) this.status = status;
     }
+
+    public void setAccountInfoByDto(AccountInformReq dto) {
+        if (dto.getNickname() != null) this.nickname = dto.getNickname();
+
+        if (dto.getMbti() != null) this.mbti = dto.getMbti();
+
+        if (dto.getProfileImageIndex() != null) this.profileImageIndex = dto.getProfileImageIndex();
+    }
+
 }
