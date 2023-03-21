@@ -1,5 +1,6 @@
 package com.kusitms.tikkle.account;
 
+import com.kusitms.tikkle.account.dto.AccountInformReq;
 import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.Account;
@@ -50,5 +51,13 @@ public class AccountService {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         account.toggleValid(status);
+    }
+
+    @Transactional
+    public void changeAccountInfor(CustomUserDetails customUserDetails, AccountInformReq dto) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+
+        account.setAccountInfoByDto(dto);
     }
 }
