@@ -1,6 +1,7 @@
 package com.kusitms.tikkle.account;
 
 import com.kusitms.tikkle.account.dto.AccountInformReq;
+import com.kusitms.tikkle.account.dto.AccountInformRes;
 import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
@@ -46,7 +47,13 @@ public class AccountController {
     @PatchMapping("/accounts/information")
     public CommonResponse changeAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                     @RequestBody AccountInformReq dto) {
-        accountService.changeAccountInfor(customUserDetails, dto);
+        accountService.changeAccountInform(customUserDetails, dto);
         return responseService.getSuccessResponse();
+    }
+
+    @GetMapping("/accounts")
+    public DataResponse<AccountInformRes> getAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        AccountInformRes accountInform = accountService.getAccountInform(customUserDetails);
+        return responseService.getDataResponse(accountInform);
     }
 }
