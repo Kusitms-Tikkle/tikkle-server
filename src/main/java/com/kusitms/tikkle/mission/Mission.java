@@ -1,12 +1,16 @@
 package com.kusitms.tikkle.mission;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.challenge.Challenge;
+import com.kusitms.tikkle.participate.Participate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +31,9 @@ public class Mission {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "mission")
+    private List<Participate> participateList = new ArrayList<>();
 
 }
