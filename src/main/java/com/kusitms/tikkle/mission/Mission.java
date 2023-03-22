@@ -24,6 +24,8 @@ public class Mission {
     @Enumerated(EnumType.STRING)
     private Day day;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "challenge_id")
+    private Challenge challenge;
 
 }
