@@ -1,15 +1,19 @@
 package com.kusitms.tikkle.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.account.dto.AccountInformReq;
 import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
+import com.kusitms.tikkle.participate.Participate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -45,6 +49,10 @@ public class Account {
     private Integer profileImageIndex;
 
     private boolean isChecked;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    private List<Participate> participateList = new ArrayList<>();
 
     public static Account createAccount(String oAuthId, String email, String nickname) {
         return Account.builder()
