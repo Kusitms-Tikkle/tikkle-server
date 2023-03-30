@@ -11,6 +11,8 @@ import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
 import com.kusitms.tikkle.configure.security.jwt.JwtTokenProvider;
+import com.kusitms.tikkle.mbti.Mbti;
+import com.kusitms.tikkle.mbti.MbtiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final MbtiRepository mbtiRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
@@ -67,4 +70,15 @@ public class AccountService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti(), account.getProfileImageIndex());
     }
+
+
+    @Transactional
+    public void postMbti(CustomUserDetails customUserDetails, String type) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Mbti mbti = mbtiRepository.findByType(type)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MBTI_NOT_FOUND));
+        account.setAccountMbti(mbti);
+    }
+
 }
