@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class AccountInformRes {
     private Long id;
     private String nickname;
-    private Integer mbti;
+    private String label;
     private Integer profileImageIndex;
 }

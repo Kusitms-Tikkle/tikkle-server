@@ -27,6 +27,12 @@ public class Challenge {
 
     private String intro;
 
+    private String color;
+
+    private String shortIntro;
+
+    private String imageUrl;
+
     @JsonIgnore
     @OneToMany(mappedBy = "challenge")
     private List<Mission> missionList = new ArrayList<>();
