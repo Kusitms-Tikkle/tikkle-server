@@ -24,4 +24,6 @@ public class Mbti {
     private String type;
 
     private String intro;
+
+    private String imageUrl;
 }
