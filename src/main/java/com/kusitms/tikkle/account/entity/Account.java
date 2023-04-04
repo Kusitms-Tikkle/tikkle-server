@@ -5,6 +5,7 @@ import com.kusitms.tikkle.account.dto.AccountInformReq;
 import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
+import com.kusitms.tikkle.mbti.Mbti;
 import com.kusitms.tikkle.participate.Participate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,11 +45,13 @@ public class Account {
 
     private String nickname;
 
-    private Integer mbti;
-
     private Integer profileImageIndex;
 
     private boolean isChecked;
+
+    @OneToOne
+    @JoinColumn(name = "mbti_id")
+    private Mbti mbti;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
@@ -62,6 +65,10 @@ public class Account {
                 .build();
     }
 
+    public void setAccountMbti(Mbti mbti) {
+        this.mbti = mbti;
+    }
+
     public void toggleValid(Status status) {
         if(this.status.equals(Status.VALID) && status.equals(Status.DELETED)) this.status = Status.DELETED;
         if(this.status.equals(Status.VALID) && status.equals(Status.LOGOUT)) this.status = Status.LOGOUT;
@@ -71,7 +78,7 @@ public class Account {
     public void setAccountInfoByDto(AccountInformReq dto) {
         if (dto.getNickname() != null) this.nickname = dto.getNickname();
 
-        if (dto.getMbti() != null) this.mbti = dto.getMbti();
+        //if (dto.getMbti() != null) this.mbti = dto.getMbti();
 
         if (dto.getProfileImageIndex() != null) this.profileImageIndex = dto.getProfileImageIndex();
     }

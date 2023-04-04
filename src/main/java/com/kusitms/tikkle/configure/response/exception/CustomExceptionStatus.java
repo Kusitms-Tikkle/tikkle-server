@@ -15,7 +15,19 @@ public enum CustomExceptionStatus {
     ACCOUNT_NOT_FOUND(false, 2010, "사용자를 찾을 수 없습니다."),
 
     // OAuth
-    OAUTH_EMPTY_INFORM(false, 2560, "OAuth에 필요한 정보가 누락되었습니다.");
+    OAUTH_EMPTY_INFORM(false, 2560, "OAuth에 필요한 정보가 누락되었습니다."),
+
+    // challenge
+    CHALLENGE_NOT_FOUND(false, 2020, "챌린지를 찾을 수 없습니다."),
+
+    // mbti
+    MBTI_NOT_FOUND(false, 2030, "MBTI를 찾을 수 없습니다."),
+
+    // home
+
+    //s3
+    S3_UPLOAD_FAIL(false, 2050, "이미지 업로드에 실패했습니다."),
+    FILE_WRONG_TYPE(false, 2051,  "잘못된 형식의 파일입니다.");
 
 
 

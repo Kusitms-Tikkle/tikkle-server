@@ -52,8 +52,16 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public DataResponse<AccountInformRes> getAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public CommonResponse getAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         AccountInformRes accountInform = accountService.getAccountInform(customUserDetails);
         return responseService.getDataResponse(accountInform);
     }
+
+
+    @PostMapping("/accounts/mbti/{type}")
+    public CommonResponse postMbti(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "type") String type) {
+        accountService.postMbti(customUserDetails, type);
+        return responseService.getSuccessResponse();
+    }
+
 }
