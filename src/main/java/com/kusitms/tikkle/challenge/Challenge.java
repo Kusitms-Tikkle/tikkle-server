@@ -33,6 +33,8 @@ public class Challenge {
 
     private String imageUrl;
 
+    private boolean required;
+
     @JsonIgnore
     @OneToMany(mappedBy = "challenge")
     private List<Mission> missionList = new ArrayList<>();
