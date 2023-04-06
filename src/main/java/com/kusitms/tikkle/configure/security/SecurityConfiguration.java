@@ -27,8 +27,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/accounts/**").hasRole("USER")
+                .antMatchers("/login/**", "/challenge/recommendation/test").permitAll()
+                .antMatchers("/accounts/**, /challenge/**").hasRole("USER")
                 .and()
                 .httpBasic().disable()
                 .csrf().disable()
