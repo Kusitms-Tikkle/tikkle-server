@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ParticipateChallengeRepository extends JpaRepository<ParticipateChallenge, Long> {
     List<ParticipateChallenge> findByAccountId(Long accountId);
+    ParticipateChallenge findByAccountIdAndChallengeId(Long accountId, Long challengeId);
 }
