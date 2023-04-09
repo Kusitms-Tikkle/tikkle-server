@@ -6,6 +6,7 @@ import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.mbti.Mbti;
+import com.kusitms.tikkle.participate_challenge.ParticipateChallenge;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,6 +53,10 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    private List<ParticipateChallenge> participateChallenges = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
