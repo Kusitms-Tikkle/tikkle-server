@@ -6,7 +6,9 @@ import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.mbti.Mbti;
-import com.kusitms.tikkle.participate.Participate;
+import com.kusitms.tikkle.participate_challenge.ParticipateChallenge;
+import com.kusitms.tikkle.participate_mission.ParticipateMission;
+import com.kusitms.tikkle.todo.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +57,15 @@ public class Account {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private List<Participate> participateList = new ArrayList<>();
+    private List<ParticipateChallenge> participateChallenges = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    private List<ParticipateMission> participateMissions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    private List<Todo> todoList = new ArrayList<>();
 
     public static Account createAccount(String oAuthId, String email, String nickname) {
         return Account.builder()

@@ -15,8 +15,8 @@ import com.kusitms.tikkle.mission.Day;
 import com.kusitms.tikkle.mission.Mission;
 import com.kusitms.tikkle.mission.MissionRepository;
 import com.kusitms.tikkle.mission.dto.MissionRes;
-import com.kusitms.tikkle.participate.Participate;
-import com.kusitms.tikkle.participate.ParticipateRepository;
+import com.kusitms.tikkle.participate_mission.ParticipateMission;
+import com.kusitms.tikkle.participate_mission.ParticipateMissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,7 @@ public class ChallengeService {
     private final AccountRepository accountRepository;
     private final MbtiRepository mbtiRepository;
     private final MissionRepository missionRepository;
-    private final ParticipateRepository participateRepository;
+    private final ParticipateMissionRepository participateMissionRepository;
 
 
     public ChallengeRecommendRes getChallengeRecommendationByAccount(CustomUserDetails customUserDetails) {
@@ -60,6 +60,7 @@ public class ChallengeService {
                 challengeList.parallelStream().distinct().collect(Collectors.toList()));
     }
 
+
     public ChallengeDetailRes getChallengeDetailById(CustomUserDetails customUserDetails, Long id) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));   // 유효한 사용자인지 체크
@@ -71,15 +72,15 @@ public class ChallengeService {
 
         List<MissionRes> resList = new ArrayList<>();
         for(Mission m : list) {
-            Participate p = participateRepository.findByAccountIdAndMissionId(account.getId(), m.getId());
-            if (m.getDay() == Day.ALL && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), true, m.getDay()));
-            if (m.getDay() == Day.ALL && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), true, m.getDay()));
-            if (m.getDay() != Day.ALL && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
-            if (m.getDay() != Day.ALL && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
+            // 사용자가 참여한 미션인지 확인
+            ParticipateMission p = participateMissionRepository.findByAccountIdAndMissionId(account.getId(), m.getId());
+            if (m.isRequired() == true && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), true, m.getDay()));
+            if (m.isRequired() == true && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), true, m.getDay()));
+            if (m.isRequired() == false && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
+            if (m.isRequired() == false && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
         }
         return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), resList);
     }
-
 
     // 프론트 요청
     public ChallengeRecommendRes getChallengeRecommendationByAccountTest(Long id) {
