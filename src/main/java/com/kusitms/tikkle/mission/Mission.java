@@ -2,7 +2,7 @@ package com.kusitms.tikkle.mission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.challenge.Challenge;
-import com.kusitms.tikkle.participate.Participate;
+import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +33,6 @@ public class Mission {
 
     @JsonIgnore
     @OneToMany(mappedBy = "mission")
-    private List<Participate> participateList = new ArrayList<>();
+    private List<ParticipateMission> participateMissions = new ArrayList<>();
 
 }

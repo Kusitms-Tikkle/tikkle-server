@@ -1,6 +1,6 @@
 package com.kusitms.tikkle.todo;
 
-import com.kusitms.tikkle.participate.Participate;
+import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +24,8 @@ public class Todo {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participate_id")
-    private Participate participate;
+    @JoinColumn(name = "participate_mission_id")
+    private ParticipateMission participateMission;
 
 
 
