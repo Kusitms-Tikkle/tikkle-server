@@ -35,4 +35,18 @@ public class ParticipateChallenge {
     @JsonIgnore
     @OneToMany(mappedBy = "participateChallenge")
     private List<ParticipateMission> participateMissions = new ArrayList<>();
+
+    // 연관관계 편의 메서드
+    public void setAccount(Account account) {
+        this.account = account;
+        account.getParticipateChallenges().add(this);
+    }
+
+
+    public static ParticipateChallenge createParticipateChallenge(Account account, Challenge challenge) {
+        ParticipateChallenge p = new ParticipateChallenge();
+        p.setAccount(account);
+        p.challenge = challenge;
+        return p;
+    }
 }

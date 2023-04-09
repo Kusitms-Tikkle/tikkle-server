@@ -39,4 +39,22 @@ public class ParticipateMission {
     @JsonIgnore
     @OneToMany(mappedBy = "participateMission")
     private List<Todo> todoList = new ArrayList<>();
+
+    public void setAccount(Account account) {
+        this.account = account;
+        account.getParticipateMissions().add(this);
+    }
+
+    public void setParticipateChallenge(ParticipateChallenge pc) {
+        this.participateChallenge = pc;
+        pc.getParticipateMissions().add(this);
+    }
+
+    public static ParticipateMission createParticipateMission(Account account, Mission mission, ParticipateChallenge participateChallenge) {
+        ParticipateMission pm = new ParticipateMission();
+        pm.setAccount(account);
+        pm.mission = mission;
+        pm.setParticipateChallenge(participateChallenge);
+        return pm;
+    }
 }
