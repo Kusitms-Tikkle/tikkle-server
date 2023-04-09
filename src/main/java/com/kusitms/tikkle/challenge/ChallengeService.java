@@ -74,10 +74,10 @@ public class ChallengeService {
         for(Mission m : list) {
             // 사용자가 참여한 미션인지 확인
             ParticipateMission p = participateMissionRepository.findByAccountIdAndMissionId(account.getId(), m.getId());
-            if (m.getDay() == Day.ALL && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), true, m.getDay()));
-            if (m.getDay() == Day.ALL && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), true, m.getDay()));
-            if (m.getDay() != Day.ALL && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
-            if (m.getDay() != Day.ALL && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
+            if (m.isRequired() == true && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), true, m.getDay()));
+            if (m.isRequired() == true && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), true, m.getDay()));
+            if (m.isRequired() == false && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
+            if (m.isRequired() == false && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
         }
         return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), resList);
     }

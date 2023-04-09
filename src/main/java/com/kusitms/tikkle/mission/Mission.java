@@ -27,12 +27,9 @@ public class Mission {
     @Enumerated(EnumType.STRING)
     private Day day;
 
+    private boolean required;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "mission")
-    private List<ParticipateMission> participateMissions = new ArrayList<>();
-
 }
