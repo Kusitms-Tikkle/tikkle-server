@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -32,10 +30,4 @@ public class Challenge {
     private String shortIntro;
 
     private String imageUrl;
-
-    private boolean required;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "challenge")
-    private List<Mission> missionList = new ArrayList<>();
 }

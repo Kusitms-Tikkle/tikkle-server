@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
     List<Mission> findByChallengeId(Long id);
+
+    List<Mission> findByChallengeIdAndRequired(Long id, boolean b);
 }
