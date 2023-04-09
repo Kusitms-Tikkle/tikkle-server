@@ -56,4 +56,11 @@ public class ParticipateChallengeService {
         }
     }
 
+    public boolean checkParticipateChallenge(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+
+        List<ParticipateChallenge> list = participateChallengeRepository.findByAccountId(account.getId());
+        return list.size() == 2 ? true : false;
+    }
 }
