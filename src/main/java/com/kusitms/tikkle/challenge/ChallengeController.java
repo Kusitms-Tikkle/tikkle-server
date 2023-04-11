@@ -34,7 +34,7 @@ public class ChallengeController {
 
     @GetMapping("/recommendation/test")
     public CommonResponse getChallengeRecommendationByAccountTest() {
-        ChallengeRecommendRes res = challengeService.getChallengeRecommendationByAccountTest(1L);
+        ChallengeRecommendRes res = challengeService.getChallengeRecommendationByAccountTest(2L);
         return responseService.getDataResponse(res);
     }
 
