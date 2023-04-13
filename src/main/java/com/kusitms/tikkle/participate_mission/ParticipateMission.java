@@ -37,7 +37,7 @@ public class ParticipateMission {
     private ParticipateChallenge participateChallenge;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "participateMission")
+    @OneToMany(mappedBy = "participateMission", orphanRemoval = true)
     private List<Todo> todoList = new ArrayList<>();
 
     public void setAccount(Account account) {
