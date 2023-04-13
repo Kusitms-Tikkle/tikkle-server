@@ -27,4 +27,10 @@ public class ParticipateChallengeController {
         boolean b = participateChallengeService.checkParticipateChallenge(customUserDetails);
         return responseService.getDataResponse(b);
     }
+
+    @DeleteMapping("{id}")
+    public CommonResponse deleteParticipateChallenge(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        participateChallengeService.deleteParticipateChallenge(customUserDetails, id);
+        return responseService.getSuccessResponse();
+    }
 }
