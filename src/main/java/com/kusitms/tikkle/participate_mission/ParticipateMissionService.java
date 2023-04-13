@@ -46,4 +46,12 @@ public class ParticipateMissionService {
         if (todo != null) todoRepository.save(todo);
 
     }
+
+    @Transactional
+    public void deleteParticipateMission(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+
+        participateMissionRepository.deleteByAccountIdAndMissionId(account.getId(), id);
+    }
 }
