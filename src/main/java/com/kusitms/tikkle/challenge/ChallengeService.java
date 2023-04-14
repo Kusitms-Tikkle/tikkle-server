@@ -15,6 +15,8 @@ import com.kusitms.tikkle.mission.Day;
 import com.kusitms.tikkle.mission.Mission;
 import com.kusitms.tikkle.mission.MissionRepository;
 import com.kusitms.tikkle.mission.dto.MissionRes;
+import com.kusitms.tikkle.participate_challenge.ParticipateChallenge;
+import com.kusitms.tikkle.participate_challenge.ParticipateChallengeRepository;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import com.kusitms.tikkle.participate_mission.ParticipateMissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class ChallengeService {
     private final MbtiRepository mbtiRepository;
     private final MissionRepository missionRepository;
     private final ParticipateMissionRepository participateMissionRepository;
+    private final ParticipateChallengeRepository participateChallengeRepository;
 
 
     public ChallengeRecommendRes getChallengeRecommendationByAccount(CustomUserDetails customUserDetails) {
@@ -68,6 +71,10 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.CHALLENGE_NOT_FOUND));
 
+        ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
+        boolean participate;
+        participate = pc != null ?  true :  false;
+
         List<Mission> list = missionRepository.findByChallengeId(id);
 
         List<MissionRes> resList = new ArrayList<>();
@@ -79,7 +86,8 @@ public class ChallengeService {
             if (m.isRequired() == false && p == null) resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
             if (m.isRequired() == false && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
         }
-        return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), resList);
+
+        return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), participate, resList);
     }
 
     // 프론트 요청

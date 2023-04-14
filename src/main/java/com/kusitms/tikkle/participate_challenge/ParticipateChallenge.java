@@ -33,7 +33,7 @@ public class ParticipateChallenge {
     private Challenge challenge;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "participateChallenge")
+    @OneToMany(mappedBy = "participateChallenge", orphanRemoval = true)
     private List<ParticipateMission> participateMissions = new ArrayList<>();
 
     // 연관관계 편의 메서드

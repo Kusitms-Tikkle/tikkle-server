@@ -63,4 +63,13 @@ public class ParticipateChallengeService {
         List<ParticipateChallenge> list = participateChallengeRepository.findByAccountId(account.getId());
         return list.size() == 2 ? true : false;
     }
+
+    @Transactional
+    public void deleteParticipateChallenge(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+
+        ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
+        participateChallengeRepository.delete(pc);
+    }
 }

@@ -23,11 +23,17 @@ public enum CustomExceptionStatus {
     // mbti
     MBTI_NOT_FOUND(false, 2030, "MBTI를 찾을 수 없습니다."),
 
-    // home
+    // mission
+    MISSION_NOT_FOUND(false, 2040, "미션을 찾을 수 없습니다."),
+
+    // participate
+    PARTICIPATE_CHALLENGE_NOT_FOUND(false, 2050, "참여한 챌린지를 찾을 수 없습니다."),
+
+    //home
 
     //s3
-    S3_UPLOAD_FAIL(false, 2050, "이미지 업로드에 실패했습니다."),
-    FILE_WRONG_TYPE(false, 2051,  "잘못된 형식의 파일입니다.");
+    S3_UPLOAD_FAIL(false, 2070, "이미지 업로드에 실패했습니다."),
+    FILE_WRONG_TYPE(false, 2071,  "잘못된 형식의 파일입니다.");
 
 
 
