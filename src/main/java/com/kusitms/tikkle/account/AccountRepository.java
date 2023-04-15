@@ -20,14 +20,12 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Modifying
     @Query(value = "UPDATE account a SET " +
             "a.nickname = :nickname, " +
-            "a.profile_image_index = :profileImageIndex, " +
             "a.is_checked = :isChecked " +
             "a.role = :roleType " +
             "a.status= :status " +
             "where a.account_id =:id", nativeQuery = true)
     void updateExtraInfoByAccountId(@Param(value = "id") Long id,
                                     @Param(value = "nickname") String nickname,
-                                    @Param(value = "profileImageIndex") int profileImageIndex,
                                     @Param(value = "isChecked") boolean isChecked,
                                     @Param(value = "roleType") RoleType roleType,
                                     @Param(value = "status") Status valid);

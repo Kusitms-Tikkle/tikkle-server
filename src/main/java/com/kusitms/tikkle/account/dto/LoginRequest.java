@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest {
     private String nickname;
-    private int profileImageIndex;
     private boolean isChecked;
 
-    public LoginRequest(String nickname, int profileImageIndex, boolean isChecked) {
+    public LoginRequest(String nickname, boolean isChecked) {
         this.nickname = nickname;
-        this.profileImageIndex = profileImageIndex;
         this.isChecked = isChecked;
     }
 }
