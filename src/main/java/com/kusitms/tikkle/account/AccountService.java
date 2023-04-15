@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.kusitms.tikkle.account.entity.enumtypes.RoleType.ROLE_USER;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +38,7 @@ public class AccountService {
         if(byId.isPresent()) account = byId.get();
 
         // 회원가입 완료
-        accountRepository.updateExtraInfoByAccountId(id, request.getNickname(), request.isChecked(), RoleType.ROLE_USER, Status.VALID);
+        accountRepository.updateExtraInfoByAccountId(id, request.getNickname(), request.isChecked(), ROLE_USER.toString(), Status.VALID.toString());
         // 이때 getrole()값 있는지 확인! 왜냐면 위 Update문에서 role값 채움
         String token = jwtTokenProvider.createToken(account.getEmail(), account.getRole());
         return new LoginResponse("SignIn", account, token);
