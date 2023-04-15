@@ -36,7 +36,7 @@ public class AccountService {
         if(byId.isPresent()) account = byId.get();
 
         // 회원가입 완료
-        accountRepository.updateExtraInfoByAccountId(id, request.getNickname(), request.getProfileImageIndex(), request.isChecked(), RoleType.ROLE_USER, Status.VALID);
+        accountRepository.updateExtraInfoByAccountId(id, request.getNickname(), request.isChecked(), RoleType.ROLE_USER, Status.VALID);
         // 이때 getrole()값 있는지 확인! 왜냐면 위 Update문에서 role값 채움
         String token = jwtTokenProvider.createToken(account.getEmail(), account.getRole());
         return new LoginResponse("SignIn", account, token);
