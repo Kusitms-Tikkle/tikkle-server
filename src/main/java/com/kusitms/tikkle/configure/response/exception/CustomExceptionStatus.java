@@ -30,6 +30,7 @@ public enum CustomExceptionStatus {
     PARTICIPATE_CHALLENGE_NOT_FOUND(false, 2050, "참여한 챌린지를 찾을 수 없습니다."),
 
     //home
+    TODO_NOT_FOUND(false, 2060, "todo를 찾을 수 없습니다,"),
 
     //s3
     S3_UPLOAD_FAIL(false, 2070, "이미지 업로드에 실패했습니다."),
