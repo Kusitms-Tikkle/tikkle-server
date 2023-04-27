@@ -67,4 +67,9 @@ public class Todo {
         else return null;
     }
 
+    public Todo setIsCheck(Todo todo) {
+        todo.isChecked = true;
+        return todo;
+    }
+
 }
