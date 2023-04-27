@@ -5,7 +5,6 @@ import com.kusitms.tikkle.account.dto.AccountInformRes;
 import com.kusitms.tikkle.account.dto.LoginRequest;
 import com.kusitms.tikkle.account.dto.LoginResponse;
 import com.kusitms.tikkle.account.entity.Account;
-import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
@@ -72,9 +71,11 @@ public class AccountService {
     public AccountInformRes getAccountInform(CustomUserDetails customUserDetails) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
-        return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti().getLabel(), account.getProfileImageIndex());
+        // mbti에 해당하는 이미지 리턴
+        Mbti mbti = mbtiRepository.findById(account.getMbti().getId())
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MBTI_NOT_FOUND));
+        return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti().getLabel(), mbti.getImageUrl());
     }
-
 
     @Transactional
     public void postMbti(CustomUserDetails customUserDetails, String type) {
