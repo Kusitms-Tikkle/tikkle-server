@@ -85,12 +85,16 @@ public class Account {
         if(this.status.equals(Status.LOGOUT)) this.status = status;
     }
 
-    public void setAccountInfoByDto(AccountInformReq dto) {
-        if (dto.getNickname() != null) this.nickname = dto.getNickname();
-
-        //if (dto.getMbti() != null) this.mbti = dto.getMbti();
-
-        if (dto.getProfileImageIndex() != null) this.profileImageIndex = dto.getProfileImageIndex();
+    public void changeAccountInform(String nickname, Mbti mbti) {
+        this.nickname = nickname;
+        setAccountMbti(mbti);
     }
 
+    public Account updateExtraInfo(String nickname, boolean checked, RoleType roletype, Status valid) {
+        this.nickname = nickname;
+        this.isChecked = checked;
+        this.role = roletype;
+        this.status = valid;
+        return this;
+    }
 }
