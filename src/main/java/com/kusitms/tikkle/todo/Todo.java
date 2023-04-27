@@ -1,5 +1,6 @@
 package com.kusitms.tikkle.todo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.account.entity.Account;
 import com.kusitms.tikkle.mission.Day;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
@@ -28,11 +29,13 @@ public class Todo {
     private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participate_mission_id")
+    @JsonIgnore
     private ParticipateMission participateMission;
 
     public void setAccount(Account account) {
@@ -42,7 +45,7 @@ public class Todo {
 
     public String setDate(Day day) {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
         if (day == Day.ALL) {   // 매일
             this.date = dateFmt.format(cal.getTime());  // 오늘 날짜
         }else {     // MON, TUE, WED, THUR, FRI, SAT, SUN
@@ -63,4 +66,5 @@ public class Todo {
         if (date != null) return todo;
         else return null;
     }
+
 }
