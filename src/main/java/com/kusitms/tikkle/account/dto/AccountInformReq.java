@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AccountInformReq {
     private String nickname;
-    private Integer mbti;
-    private Integer profileImageIndex;
+    private String mbti;
 }

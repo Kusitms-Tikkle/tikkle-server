@@ -63,8 +63,10 @@ public class AccountService {
     public void changeAccountInform(CustomUserDetails customUserDetails, AccountInformReq dto) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Mbti mbti = mbtiRepository.findByType(dto.getMbti())
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MBTI_NOT_FOUND));
 
-        account.setAccountInfoByDto(dto);
+        account.changeAccountInform(dto.getNickname(), mbti);
     }
 
     public AccountInformRes getAccountInform(CustomUserDetails customUserDetails) {
