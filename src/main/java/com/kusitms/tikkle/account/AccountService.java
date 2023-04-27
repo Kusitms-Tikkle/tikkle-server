@@ -38,9 +38,9 @@ public class AccountService {
         if(byId.isPresent()) account = byId.get();
 
         // 회원가입 완료
-        accountRepository.updateExtraInfoByAccountId(id, request.getNickname(), request.isChecked(), ROLE_USER.toString(), Status.VALID.toString());
-        // 이때 getrole()값 있는지 확인! 왜냐면 위 Update문에서 role값 채움
-        String token = jwtTokenProvider.createToken(account.getEmail(), account.getRole());
+        Account updateAccount = account.updateExtraInfo(request.getNickname(), request.isChecked(), ROLE_USER, Status.VALID);
+        Account save = accountRepository.save(updateAccount);
+        String token = jwtTokenProvider.createToken(save.getEmail(), save.getRole());
         return new LoginResponse("SignIn", account, token);
     }
 

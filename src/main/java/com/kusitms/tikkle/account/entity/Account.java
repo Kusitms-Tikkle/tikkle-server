@@ -93,4 +93,11 @@ public class Account {
         if (dto.getProfileImageIndex() != null) this.profileImageIndex = dto.getProfileImageIndex();
     }
 
+    public Account updateExtraInfo(String nickname, boolean checked, RoleType roletype, Status valid) {
+        this.nickname = nickname;
+        this.isChecked = checked;
+        this.role = roletype;
+        this.status = valid;
+        return this;
+    }
 }
