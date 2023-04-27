@@ -11,5 +11,5 @@ public class AccountInformRes {
     private Long id;
     private String nickname;
     private String label;
-    private Integer profileImageIndex;
+    private String imageUrl;
 }
