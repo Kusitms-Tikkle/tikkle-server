@@ -81,9 +81,17 @@ public class AccountService {
     public void postMbti(CustomUserDetails customUserDetails, String type) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        // x(타인 중심 소비형),y(타인 영향 소비형-긍정) 제거
+        // 챌린지는 z(타인 영향 소비형-부정)만 존재
+        if(type.contains("x") || type.contains("y")) {
+            type = type.replace("x", "");
+            type = type.replace("y", "");
+        }
+        System.out.println(">>>>>>>>>>>>>type: " + type);
         Mbti mbti = mbtiRepository.findByType(type)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MBTI_NOT_FOUND));
         account.setAccountMbti(mbti);
     }
+
 
 }
