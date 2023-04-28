@@ -22,15 +22,21 @@ public class ParticipateChallengeController {
         return responseService.getSuccessResponse();
     }
 
+    @DeleteMapping("{id}")
+    public CommonResponse deleteParticipateChallenge(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        participateChallengeService.deleteParticipateChallenge(customUserDetails, id);
+        return responseService.getSuccessResponse();
+    }
+
     @GetMapping("/check")
     public CommonResponse checkParticipateChallenge(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         boolean b = participateChallengeService.checkParticipateChallenge(customUserDetails);
         return responseService.getDataResponse(b);
     }
 
-    @DeleteMapping("{id}")
-    public CommonResponse deleteParticipateChallenge(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
-        participateChallengeService.deleteParticipateChallenge(customUserDetails, id);
-        return responseService.getSuccessResponse();
+    @GetMapping("/check/{id}")
+    public CommonResponse getChallengeParticipateCheckById(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        boolean b = participateChallengeService.getChallengeParticipateCheckById(customUserDetails, id);
+        return responseService.getDataResponse(b);
     }
 }
