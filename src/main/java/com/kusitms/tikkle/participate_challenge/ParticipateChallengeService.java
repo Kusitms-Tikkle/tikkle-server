@@ -72,4 +72,11 @@ public class ParticipateChallengeService {
         ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
         participateChallengeRepository.delete(pc);
     }
+
+    public boolean getChallengeParticipateCheckById(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
+        return pc != null ? true : false;
+    }
 }

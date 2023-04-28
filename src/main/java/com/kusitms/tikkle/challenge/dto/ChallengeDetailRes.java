@@ -15,6 +15,5 @@ public class ChallengeDetailRes {
     private String imageUrl;
     private String title;
     private String intro;
-    private boolean participate;
     private List<MissionRes> missionList;
 }
