@@ -34,15 +34,14 @@ public class TodoService {
     }
 
     @Transactional
-    public void postTodoByMissionId(CustomUserDetails customUserDetails, Long id) {
+    public void toggleTodoByMissionId(CustomUserDetails customUserDetails, Long id) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.TODO_NOT_FOUND));
 
-        Todo updateTodo = todo.setIsCheck(todo);
-        todoRepository.save(updateTodo);
+        todo.toggleIsCheck();
     }
 
 }

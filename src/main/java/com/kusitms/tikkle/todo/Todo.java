@@ -67,9 +67,9 @@ public class Todo {
         else return null;
     }
 
-    public Todo setIsCheck(Todo todo) {
-        todo.isChecked = true;
-        return todo;
+    public void toggleIsCheck() {
+        if(this.isChecked) this.isChecked = false;
+        else this.isChecked = true;
     }
 
 }

@@ -25,8 +25,8 @@ public class TodoController {
     }
 
     @PostMapping("/check/{id}")
-    public CommonResponse postTodoByMissionId(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
-        todoService.postTodoByMissionId(customUserDetails, id);
+    public CommonResponse toggleTodoByMissionId(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        todoService.toggleTodoByMissionId(customUserDetails, id);
         return responseService.getSuccessResponse();
     }
 }
