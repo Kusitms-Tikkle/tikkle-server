@@ -25,6 +25,12 @@ public class ChallengeController {
         return responseService.getDataResponse(res);
     }
 
+    @GetMapping("/detail/{id}")
+    public CommonResponse getChallengeDetailById(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        ChallengeDetailRes res = challengeService.getChallengeDetailById(customUserDetails, id);
+        return responseService.getDataResponse(res);
+    }
+
     @GetMapping("/detail/participate/{id}")
     public CommonResponse getChallengeParticipateDetailById(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
         ChallengeDetailRes res = challengeService.getChallengeParticipateDetailById(customUserDetails, id);

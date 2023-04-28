@@ -63,6 +63,20 @@ public class ChallengeService {
                 challengeList.parallelStream().distinct().collect(Collectors.toList()));
     }
 
+    public ChallengeDetailRes getChallengeDetailById(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));   // 유효한 사용자인지 체크
+        Challenge challenge = challengeRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.CHALLENGE_NOT_FOUND));
+        List<Mission> missions = missionRepository.findByChallengeId(challenge.getId());
+
+        List<MissionRes> resList = new ArrayList<>();
+        for(Mission m : missions) {
+            if(m.isRequired()) resList.add(new MissionRes(m.getId(), true, m.getTitle(), true, m.getDay()));
+            else resList.add(new MissionRes(m.getId(), false, m.getTitle(), false, m.getDay()));
+        }
+        return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), resList);
+    }
 
     public ChallengeDetailRes getChallengeParticipateDetailById(CustomUserDetails customUserDetails, Long id) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
@@ -73,7 +87,7 @@ public class ChallengeService {
 
         ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
 
-        List<Mission> list = missionRepository.findByChallengeId(id);
+        List<Mission> list = missionRepository.findByChallengeId(challenge.getId());
 
         List<MissionRes> resList = new ArrayList<>();
         for(Mission m : list) {
@@ -110,5 +124,4 @@ public class ChallengeService {
         return new ChallengeRecommendRes(account.getNickname(), mbti.getLabel(), mbti.getImageUrl(), mbti.getIntro(),
                 challengeList.parallelStream().distinct().collect(Collectors.toList()));
     }
-
 }
