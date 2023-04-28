@@ -64,7 +64,7 @@ public class ChallengeService {
     }
 
 
-    public ChallengeDetailRes getChallengeDetailById(CustomUserDetails customUserDetails, Long id) {
+    public ChallengeDetailRes getChallengeParticipateDetailById(CustomUserDetails customUserDetails, Long id) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));   // 유효한 사용자인지 체크
 
@@ -72,8 +72,6 @@ public class ChallengeService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.CHALLENGE_NOT_FOUND));
 
         ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
-        boolean participate;
-        participate = pc != null ?  true :  false;
 
         List<Mission> list = missionRepository.findByChallengeId(id);
 
@@ -87,7 +85,7 @@ public class ChallengeService {
             if (m.isRequired() == false && p != null) resList.add(new MissionRes(m.getId(), true, m.getTitle(), false, m.getDay()));
         }
 
-        return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), participate, resList);
+        return new ChallengeDetailRes(challenge.getId(), challenge.getImageUrl(), challenge.getTitle(), challenge.getIntro(), resList);
     }
 
     // 프론트 요청
