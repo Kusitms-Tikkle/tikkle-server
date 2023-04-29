@@ -21,8 +21,7 @@ public class Scheduler {
     private final TodoRepository todoRepository;
 
     @Transactional
-    @Scheduled(cron = "0/10 * * * * *")    // 매일 자정
-    //@Scheduled(cron = "0 0 0 * * *")    // 매일 자정
+    @Scheduled(cron = "0 0 0 * * *")    // 매일 자정
     public void updateProgressbarAll() {
         System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<1. 스케쥴러 실행합니다>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
