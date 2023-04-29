@@ -28,7 +28,8 @@ public class Todo {
 
     private String date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;

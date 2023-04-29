@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByAccountIdAndDate(Long id, String date);
+    List<Todo> findByDate(String date);
 }
