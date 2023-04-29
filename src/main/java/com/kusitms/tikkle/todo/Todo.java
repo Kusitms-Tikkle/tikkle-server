@@ -28,7 +28,8 @@ public class Todo {
 
     private String date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
@@ -67,9 +68,9 @@ public class Todo {
         else return null;
     }
 
-    public Todo setIsCheck(Todo todo) {
-        todo.isChecked = true;
-        return todo;
+    public void toggleIsCheck() {
+        if(this.isChecked) this.isChecked = false;
+        else this.isChecked = true;
     }
 
 }

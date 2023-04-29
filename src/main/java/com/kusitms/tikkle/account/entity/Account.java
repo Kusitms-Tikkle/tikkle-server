@@ -1,7 +1,6 @@
 package com.kusitms.tikkle.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kusitms.tikkle.account.dto.AccountInformReq;
 import com.kusitms.tikkle.account.entity.enumtypes.OAuthType;
 import com.kusitms.tikkle.account.entity.enumtypes.RoleType;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
@@ -51,6 +50,10 @@ public class Account {
 
     private boolean isChecked;
 
+    private String dateList;
+
+    private double progressBar;
+
     @OneToOne
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
@@ -72,6 +75,7 @@ public class Account {
                 .oAuthId(oAuthId)
                 .email(email)
                 .oAuthNickName(nickname)
+                .dateList("")
                 .build();
     }
 
@@ -96,5 +100,13 @@ public class Account {
         this.role = roletype;
         this.status = valid;
         return this;
+    }
+
+    public void setDateList(String date) {
+        this.dateList += date;
+    }
+
+    public void setProgressBar(double progressBar) {
+        this.progressBar = progressBar;
     }
 }
