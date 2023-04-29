@@ -94,4 +94,9 @@ public class AccountService {
     }
 
 
+    public double getProgressbar(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        return account.getProgressBar();
+    }
 }

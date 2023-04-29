@@ -64,4 +64,10 @@ public class AccountController {
         return responseService.getSuccessResponse();
     }
 
+    @GetMapping("/accounts/progressbar")
+    public CommonResponse getProgressbar(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        double progressbar = accountService.getProgressbar(customUserDetails);
+        return responseService.getDataResponse(progressbar);
+    }
+
 }
