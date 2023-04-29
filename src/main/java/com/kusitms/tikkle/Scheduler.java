@@ -1,6 +1,8 @@
 package com.kusitms.tikkle;
 
 import com.kusitms.tikkle.account.entity.Account;
+import com.kusitms.tikkle.participate_mission.ParticipateMission;
+import com.kusitms.tikkle.participate_mission.ParticipateMissionRepository;
 import com.kusitms.tikkle.todo.Todo;
 import com.kusitms.tikkle.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class Scheduler {
 
     private final TodoRepository todoRepository;
+    private final ParticipateMissionRepository participateMissionRepository;
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * *")    // 매일 자정
@@ -57,5 +60,21 @@ public class Scheduler {
             account.setProgressBar((double)size/max*100);
         }
         System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<1. 스케쥴러 끝>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")    // 매일 자정
+    public void createTodos() {
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2. 스케쥴러 실행합니다>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        List<ParticipateMission> all = participateMissionRepository.findAll();
+        Map<Account, List<ParticipateMission>> collect = all.stream().collect(Collectors.groupingBy(ParticipateMission::getAccount));
+        for (Account account : collect.keySet()) {
+            List<ParticipateMission> participateMissions = collect.get(account);
+            for (ParticipateMission pm : participateMissions) {
+                Todo todo = Todo.createTodo(account, pm);
+                if (todo != null) todoRepository.save(todo);
+            }
+        }
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2. 스케쥴러 끝>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 }
