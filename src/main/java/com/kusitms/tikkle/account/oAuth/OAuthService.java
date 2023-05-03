@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.util.MultiValueMap;
 import org.springframework.http.HttpEntity;
@@ -28,6 +29,7 @@ public class OAuthService {
     private final AccountRepository accountRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Transactional
     public LoginResponse loginWithToken(String token) {
         CheckLogin checkLogin = validateSignInByToken(token);
         Account account = checkLogin.getAccount();
