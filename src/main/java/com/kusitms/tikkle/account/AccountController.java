@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
@@ -68,6 +70,12 @@ public class AccountController {
     public CommonResponse getProgressbar(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         double progressbar = accountService.getProgressbar(customUserDetails);
         return responseService.getDataResponse(progressbar);
+    }
+
+    @GetMapping("/accounts/sticker/{week_start_date}")
+    public CommonResponse getAccountSticker(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "week_start_date") String startDate) {
+        List<Boolean> stickeres = accountService.getAccountSticker(customUserDetails, startDate);
+        return responseService.getDataResponse(stickeres);
     }
 
 }
