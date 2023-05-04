@@ -49,5 +49,9 @@ public class ParticipateChallengeController {
         return responseService.getDataResponse(b);
     }
 
-
+    @GetMapping("/list")
+    public CommonResponse getParticipateChallengeListByAccountId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<ParticipateChallengeRes> res = participateChallengeService.getParticipateChallengeListByAccountId(customUserDetails);
+        return responseService.getDataResponse(res);
+    }
 }

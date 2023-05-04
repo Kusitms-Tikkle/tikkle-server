@@ -90,4 +90,13 @@ public class ParticipateChallengeService {
         else return true;
     }
 
+    public List<ParticipateChallengeRes> getParticipateChallengeListByAccountId(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+
+        List<ParticipateChallenge> list = participateChallengeRepository.findByAccountId(account.getId());
+        List<ParticipateChallengeRes> collect = list.stream().map(pc -> new ParticipateChallengeRes(pc.getChallenge().getId(), pc.getChallenge().getTitle()))
+                .collect(Collectors.toList());
+        return collect;
+    }
 }
