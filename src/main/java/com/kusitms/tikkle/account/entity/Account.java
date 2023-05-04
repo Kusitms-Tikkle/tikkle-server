@@ -106,6 +106,10 @@ public class Account {
         this.dateList += date;
     }
 
+    public void resetDateList() {
+        this.dateList = "";
+    }
+
     public void setProgressBar(double progressBar) {
         this.progressBar = progressBar;
     }

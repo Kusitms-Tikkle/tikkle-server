@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.kusitms.tikkle.account.entity.enumtypes.RoleType.ROLE_USER;
 
@@ -102,5 +104,29 @@ public class AccountService {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         return account.getProgressBar();
+    }
+
+    public List<Boolean> getAccountSticker(CustomUserDetails customUserDetails, String startDate) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        String[] dateArray= account.getDateList().split(";");
+
+        List<Boolean> stickers = new ArrayList<>();
+        for (int i=0; i<7; i++) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(startDate));
+                c.add(Calendar.DATE, i);
+                String date = sdf.format(c.getTime());
+                System.out.println("[PRINT DATE] " + date);
+                if (Arrays.stream(dateArray).anyMatch(s -> s.equals(date))) {
+                    stickers.add(true);
+                } else stickers.add(false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return stickers;
     }
 }
