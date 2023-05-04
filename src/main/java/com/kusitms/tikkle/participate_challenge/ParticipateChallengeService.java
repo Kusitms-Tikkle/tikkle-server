@@ -10,6 +10,7 @@ import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
 import com.kusitms.tikkle.mission.Mission;
 import com.kusitms.tikkle.mission.MissionRepository;
+import com.kusitms.tikkle.participate_challenge.dto.ParticipateChallengeRes;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import com.kusitms.tikkle.participate_mission.ParticipateMissionRepository;
 import com.kusitms.tikkle.todo.Todo;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -79,4 +81,13 @@ public class ParticipateChallengeService {
         ParticipateChallenge pc = participateChallengeRepository.findByAccountIdAndChallengeId(account.getId(), id);
         return pc != null ? true : false;
     }
+
+    public boolean checkParticipateChallengeAtLeastByAccountId(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<ParticipateChallenge> all = participateChallengeRepository.findByAccountId(account.getId());
+        if (all.isEmpty()) return false;
+        else return true;
+    }
+
 }
