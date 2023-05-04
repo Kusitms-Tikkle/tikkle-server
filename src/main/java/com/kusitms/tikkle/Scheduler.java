@@ -1,5 +1,6 @@
 package com.kusitms.tikkle;
 
+import com.kusitms.tikkle.account.AccountRepository;
 import com.kusitms.tikkle.account.entity.Account;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import com.kusitms.tikkle.participate_mission.ParticipateMissionRepository;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Scheduler {
 
+    private final AccountRepository accountRepository;
     private final TodoRepository todoRepository;
     private final ParticipateMissionRepository participateMissionRepository;
 
@@ -76,5 +78,17 @@ public class Scheduler {
             }
         }
         System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2. 스케쥴러 끝>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 1 * *")    // 매달 1일 정각에
+    public void resetDataList() {
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<3. 스케쥴러 실행합니다>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        // 모든 사용자의 datalist ""로 초기화
+        List<Account> all = accountRepository.findAll();
+        for(Account a : all) {
+            a.resetDateList();
+        }
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<3. 스케쥴러 끝>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 }

@@ -3,9 +3,12 @@ package com.kusitms.tikkle.participate_challenge;
 import com.kusitms.tikkle.configure.response.CommonResponse;
 import com.kusitms.tikkle.configure.response.ResponseService;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
+import com.kusitms.tikkle.participate_challenge.dto.ParticipateChallengeRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -38,5 +41,17 @@ public class ParticipateChallengeController {
     public CommonResponse getChallengeParticipateCheckById(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
         boolean b = participateChallengeService.getChallengeParticipateCheckById(customUserDetails, id);
         return responseService.getDataResponse(b);
+    }
+
+    @GetMapping("/check/least")
+    public CommonResponse checkParticipateChallengeAtLeastByAccountId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        boolean b = participateChallengeService.checkParticipateChallengeAtLeastByAccountId(customUserDetails);
+        return responseService.getDataResponse(b);
+    }
+
+    @GetMapping("/list")
+    public CommonResponse getParticipateChallengeListByAccountId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<ParticipateChallengeRes> res = participateChallengeService.getParticipateChallengeListByAccountId(customUserDetails);
+        return responseService.getDataResponse(res);
     }
 }
