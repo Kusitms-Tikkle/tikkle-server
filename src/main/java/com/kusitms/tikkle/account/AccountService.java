@@ -129,4 +129,12 @@ public class AccountService {
         }
         return stickers;
     }
+
+    public boolean checkMbtiByAccountId(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Mbti mbti = account.getMbti();
+        if (mbti==null) return false;
+        else return true;
+    }
 }

@@ -78,4 +78,10 @@ public class AccountController {
         return responseService.getDataResponse(stickeres);
     }
 
+    @GetMapping("/accounts/mbti")
+    public CommonResponse checkMbtiByAccountId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        boolean b = accountService.checkMbtiByAccountId(customUserDetails);
+        return responseService.getDataResponse(b);
+    }
+
 }
