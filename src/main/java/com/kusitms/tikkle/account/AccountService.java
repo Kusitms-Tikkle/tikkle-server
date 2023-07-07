@@ -61,13 +61,10 @@ public class AccountService {
     }
 
     @Transactional
-    public void changeAccountInform(CustomUserDetails customUserDetails, AccountInformReq dto) {
+    public void changeNickname(CustomUserDetails customUserDetails, String nickname) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
-        Mbti mbti = mbtiRepository.findByType(dto.getMbti())
-                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MBTI_NOT_FOUND));
-
-        account.changeAccountInform(dto.getNickname(), mbti);
+        account.changeNickname(nickname);
     }
 
     public AccountInformRes getAccountInform(CustomUserDetails customUserDetails) {
