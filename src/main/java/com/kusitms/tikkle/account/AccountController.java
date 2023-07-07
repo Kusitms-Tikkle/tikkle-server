@@ -34,9 +34,9 @@ public class AccountController {
         return responseService.getDataResponse(isDuplicated);
     }
 
-    @PatchMapping("/accounts/delete")
-    public CommonResponse toggleAccountValidationAsDelete(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        accountService.toggleAccountValidation(customUserDetails, Status.DELETED);
+    @DeleteMapping("/accounts/delete")
+    public CommonResponse deleteAccount(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        accountService.deleteAccount(customUserDetails);
         return responseService.getSuccessResponse();
     }
 

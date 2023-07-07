@@ -134,4 +134,10 @@ public class AccountService {
         if (mbti==null) return false;
         else return true;
     }
+
+    public void deleteAccount(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        accountRepository.delete(account);
+    }
 }
