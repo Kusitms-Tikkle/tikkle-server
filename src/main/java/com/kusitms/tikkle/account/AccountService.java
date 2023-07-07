@@ -135,6 +135,7 @@ public class AccountService {
         else return true;
     }
 
+    @Transactional
     public void deleteAccount(CustomUserDetails customUserDetails) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
