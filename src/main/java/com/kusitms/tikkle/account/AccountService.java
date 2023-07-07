@@ -74,13 +74,10 @@ public class AccountService {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         // mbti에 해당하는 이미지 리턴
-        Optional<Mbti> byId = mbtiRepository.findById(account.getMbti().getId());
-        if (byId.isPresent()) {
-            Mbti mbti = byId.get();
+        if (account.getMbti()!=null) {
+            Mbti mbti = mbtiRepository.findById(account.getMbti().getId()).get();
             return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti().getLabel(), mbti.getImageUrl());
-        } else {
-            return new AccountInformRes(account.getId(), account.getNickname(), null, null);
-        }
+        } else return new AccountInformRes(account.getId(), account.getNickname(), null, null);
     }
 
     @Transactional
