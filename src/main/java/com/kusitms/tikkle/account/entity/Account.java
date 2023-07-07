@@ -59,15 +59,15 @@ public class Account {
     private Mbti mbti;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", orphanRemoval = true)
     private List<ParticipateChallenge> participateChallenges = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", orphanRemoval = true)
     private List<ParticipateMission> participateMissions = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", orphanRemoval = true)
     private List<Todo> todoList = new ArrayList<>();
 
     public static Account createAccount(String oAuthId, String email, String nickname) {
