@@ -89,9 +89,8 @@ public class Account {
         if(this.status.equals(Status.LOGOUT)) this.status = status;
     }
 
-    public void changeAccountInform(String nickname, Mbti mbti) {
+    public void changeNickname(String nickname) {
         this.nickname = nickname;
-        setAccountMbti(mbti);
     }
 
     public Account updateExtraInfo(String nickname, boolean checked, RoleType roletype, Status valid) {

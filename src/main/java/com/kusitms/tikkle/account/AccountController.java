@@ -46,10 +46,9 @@ public class AccountController {
         return responseService.getSuccessResponse();
     }
 
-    @PatchMapping("/accounts/information")
-    public CommonResponse changeAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                    @RequestBody AccountInformReq dto) {
-        accountService.changeAccountInform(customUserDetails, dto);
+    @PatchMapping("/accounts/information/{nickname}")
+    public CommonResponse changeAccountInform(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "nickname") String nickname) {
+        accountService.changeNickname(customUserDetails, nickname);
         return responseService.getSuccessResponse();
     }
 
