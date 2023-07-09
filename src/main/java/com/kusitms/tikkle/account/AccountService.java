@@ -39,7 +39,7 @@ public class AccountService {
         if(byId.isPresent()) account = byId.get();
 
         // 회원가입 완료
-        Account updateAccount = account.updateExtraInfo(request.getNickname(), request.isChecked(), ROLE_USER, Status.VALID);
+        Account updateAccount = account.updateExtraInfo(request.getNickname(), request.isChecked(), Status.VALID);
         Account save = accountRepository.save(updateAccount);
         String token = jwtTokenProvider.createToken(save.getEmail(), save.getRole());
         return new LoginResponse("SignIn", account, token);
@@ -134,7 +134,7 @@ public class AccountService {
 
     @Transactional
     public void deleteAccount(CustomUserDetails customUserDetails) {
-        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+        Account account = accountRepository.findByEmail(customUserDetails.getEmail())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         accountRepository.delete(account);
     }
