@@ -74,6 +74,7 @@ public class Account {
         return Account.builder()
                 .oAuthId(oAuthId)
                 .email(email)
+                .role(RoleType.ROLE_USER)
                 .oAuthNickName(nickname)
                 .dateList("")
                 .build();
@@ -93,10 +94,9 @@ public class Account {
         this.nickname = nickname;
     }
 
-    public Account updateExtraInfo(String nickname, boolean checked, RoleType roletype, Status valid) {
+    public Account updateExtraInfo(String nickname, boolean checked, Status valid) {
         this.nickname = nickname;
         this.isChecked = checked;
-        this.role = roletype;
         this.status = valid;
         return this;
     }
