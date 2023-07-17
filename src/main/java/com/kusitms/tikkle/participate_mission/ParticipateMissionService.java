@@ -36,7 +36,7 @@ public class ParticipateMissionService {
         Mission mission = missionRepository.findById(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MISSION_NOT_FOUND));
 
-        ParticipateChallenge pc = participateChallengeRepository.findByChallengeId(mission.getChallenge().getId())
+        ParticipateChallenge pc = participateChallengeRepository.findByChallengeIdAndAccountId(mission.getChallenge().getId(), account.getId())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.PARTICIPATE_CHALLENGE_NOT_FOUND));
 
         ParticipateMission pm = ParticipateMission.createParticipateMission(account, mission, pc);
