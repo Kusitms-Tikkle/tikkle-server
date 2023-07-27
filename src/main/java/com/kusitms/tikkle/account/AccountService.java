@@ -73,7 +73,7 @@ public class AccountService {
         // mbti에 해당하는 이미지 리턴
         if (account.getMbti()!=null) {
             Mbti mbti = mbtiRepository.findById(account.getMbti().getId()).get();
-            return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti().getLabel(), mbti.getImageUrl());
+            return new AccountInformRes(account.getId(), account.getNickname(), account.getMbti().getLabel(), mbti.getIntro());
         } else return new AccountInformRes(account.getId(), account.getNickname(), null, null);
     }
 
