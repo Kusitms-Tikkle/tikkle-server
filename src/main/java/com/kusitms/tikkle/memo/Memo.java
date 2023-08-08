@@ -32,4 +32,13 @@ public class Memo {
     @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public static Memo createMemo(Account account, Todo todo, String content, String image) {
+        Memo m = new Memo();
+        m.account = account;
+        m.todo = todo;
+        m.content = content;
+        m.imageUrl = image;
+        return m;
+    }
 }
