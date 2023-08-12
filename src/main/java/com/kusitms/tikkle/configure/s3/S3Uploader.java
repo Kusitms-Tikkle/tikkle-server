@@ -54,7 +54,7 @@ public class S3Uploader {
             throw new CustomException(CustomExceptionStatus.S3_UPLOAD_FAIL);
         }
 
-        return fileName;
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
     private String createFileName(String fileName) {
