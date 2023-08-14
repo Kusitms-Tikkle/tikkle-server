@@ -49,4 +49,15 @@ public class Memo {
     public void togglePrivate() {
         this.isPrivate = !this.isPrivate;
     }
+
+    public void changeMemo(String content, String image) {
+        if (content != null && image != null) {
+            this.content = content;
+            this.imageUrl = image;
+        } else if (content != null) {
+            this.content = content;
+        } else if (image != null) {
+            this.imageUrl = image;
+        }
+    }
 }

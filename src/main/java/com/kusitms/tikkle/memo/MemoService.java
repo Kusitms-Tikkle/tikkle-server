@@ -60,4 +60,17 @@ public class MemoService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
         memoRepository.delete(memo);
     }
+
+    @Transactional
+    public void changeMemoContent(CustomUserDetails customUserDetails, MemoRequestDto memoRequestDto, MultipartFile multipartFile) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(memoRequestDto.getId())
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        String image = null;
+        if (multipartFile!=null) {
+            image = s3Uploader.uploadImage(multipartFile);
+        }
+        memo.changeMemo(memoRequestDto.getContent(), image);
+    }
 }

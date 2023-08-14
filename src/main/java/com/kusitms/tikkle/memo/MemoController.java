@@ -35,4 +35,11 @@ public class MemoController {
         memoService.deleteMemo(customUserDetails, id);
         return responseService.getSuccessResponse();
     }
+
+    @PatchMapping()
+    public CommonResponse changeMemoContent(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                            @RequestPart(value = "memoDto") MemoRequestDto memoRequestDto, @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+        memoService.changeMemoContent(customUserDetails, memoRequestDto, multipartFile);
+        return responseService.getSuccessResponse();
+    }
 }
