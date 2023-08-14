@@ -51,4 +51,13 @@ public class MemoService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
         memo.togglePrivate();
     }
+
+    @Transactional
+    public void deleteMemo(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        memoRepository.delete(memo);
+    }
 }

@@ -29,4 +29,10 @@ public class MemoController {
         memoService.toggleMemoPrivate(customUserDetails, id);
         return responseService.getSuccessResponse();
     }
+
+    @DeleteMapping("/{id}")
+    public CommonResponse deleteMemo(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        memoService.deleteMemo(customUserDetails, id);
+        return responseService.getSuccessResponse();
+    }
 }
