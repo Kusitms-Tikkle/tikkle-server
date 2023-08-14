@@ -23,4 +23,10 @@ public class MemoController {
         memoService.postMemo(customUserDetails, memoRequestDto, multipartFile);
         return responseService.getSuccessResponse();
     }
+
+    @PostMapping("/private/{id}")
+    public CommonResponse toggleMemoPrivate(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        memoService.toggleMemoPrivate(customUserDetails, id);
+        return responseService.getSuccessResponse();
+    }
 }

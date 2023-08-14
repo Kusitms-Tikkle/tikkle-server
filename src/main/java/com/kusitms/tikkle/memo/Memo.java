@@ -2,6 +2,7 @@ package com.kusitms.tikkle.memo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.account.entity.Account;
+import com.kusitms.tikkle.account.entity.enumtypes.Status;
 import com.kusitms.tikkle.todo.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,5 +44,9 @@ public class Memo {
         m.imageUrl = image;
         m.isPrivate = false;
         return m;
+    }
+
+    public void togglePrivate() {
+        this.isPrivate = !this.isPrivate;
     }
 }
