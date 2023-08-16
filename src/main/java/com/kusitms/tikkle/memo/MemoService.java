@@ -7,13 +7,18 @@ import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.s3.S3Uploader;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
+import com.kusitms.tikkle.memo.dto.MemoDto;
 import com.kusitms.tikkle.memo.dto.MemoRequestDto;
+import com.kusitms.tikkle.memo.dto.MemoWithTodoResponseDto;
 import com.kusitms.tikkle.todo.Todo;
 import com.kusitms.tikkle.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,4 +47,53 @@ public class MemoService {
         }
         memoRepository.save(memo);
     }
+
+    @Transactional
+    public void toggleMemoPrivate(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        memo.togglePrivate();
+    }
+
+    @Transactional
+    public void deleteMemo(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        memoRepository.delete(memo);
+    }
+
+    @Transactional
+    public void changeMemoContent(CustomUserDetails customUserDetails, MemoRequestDto memoRequestDto, MultipartFile multipartFile) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(memoRequestDto.getId())
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        String image = null;
+        if (multipartFile!=null) {
+            image = s3Uploader.uploadImage(multipartFile);
+        }
+        memo.changeMemo(memoRequestDto.getContent(), image);
+    }
+
+    public List<MemoWithTodoResponseDto> getMyMemosByDate(CustomUserDetails customUserDetails, String date) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<Todo> todos = todoRepository.findByAccountIdAndDate(account.getId(), date);
+        List<MemoWithTodoResponseDto> responseDtos = new ArrayList<>();
+        for(Todo todo : todos) {
+            MemoWithTodoResponseDto dto = new MemoWithTodoResponseDto(todo.getId(), todo.getParticipateMission().getMission().getTitle(), todo.getParticipateMission().getMission().getChallenge().getColor());
+            Optional<Memo> memo = memoRepository.findByTodoId(todo.getId());
+            if(memo.isPresent()) {
+                MemoDto memoDto = new MemoDto(memo.get().getId(), memo.get().getContent(), memo.get().getImageUrl(), memo.get().isPrivate(), 1, 1, 1);
+                dto.setMemo(memoDto);
+            }
+            responseDtos.add(dto);
+        }
+        return responseDtos;
+    }
+
 }
