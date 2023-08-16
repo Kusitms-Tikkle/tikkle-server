@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
                 .antMatchers("/login/**", "/challenge/recommendation/test").permitAll()
-                .antMatchers("/accounts/**, /challenge/**", "/participate/**", "/todo/**").hasRole("USER")
+                .antMatchers("/accounts/**, /challenge/**", "/participate/**", "/todo/**", "/memo/**").hasRole("USER")
                 .and()
                 .httpBasic().disable()
                 .csrf().disable()
