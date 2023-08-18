@@ -31,4 +31,17 @@ public class Sticker {
     private Account account;
 
     private String dtype;
+
+    public void setMemo(Memo memo) {
+        this.memo = memo;
+        memo.getStickerList().add(this);
+    }
+
+    public static Sticker createSticker(Account account, Memo memo, String dtype) {
+        Sticker sticker = new Sticker();
+        sticker.account = account;
+        sticker.setMemo(memo);
+        sticker.dtype = dtype;
+        return sticker;
+    }
 }
