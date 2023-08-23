@@ -3,12 +3,15 @@ package com.kusitms.tikkle.memo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.account.entity.Account;
 import com.kusitms.tikkle.account.entity.enumtypes.Status;
+import com.kusitms.tikkle.sticker.Sticker;
 import com.kusitms.tikkle.todo.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -35,6 +38,10 @@ public class Memo {
     @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "memo", orphanRemoval = true,  cascade = CascadeType.REMOVE)
+    private List<Sticker> stickerList = new ArrayList<>();
 
     public static Memo createMemo(Account account, Todo todo, String content, String image) {
         Memo m = new Memo();
