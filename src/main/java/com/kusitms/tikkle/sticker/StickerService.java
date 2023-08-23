@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,5 +53,18 @@ public class StickerService {
         Optional<Sticker> sticker = stickerRepository.findByAccountIdAndMemoIdAndDtype(account.getId(), memo.getId(), dtype);
         if (sticker.isPresent()) return sticker.get().getId();
         else return null;
+    }
+
+    public Map<String, Long> getStickerReceivedByAccount(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<Memo> memos = memoRepository.findByAccountId(account.getId());
+        Map<String, Long> collect = memos.stream()
+                .flatMap(memo -> memo.getStickerList().stream())
+                .collect(Collectors.groupingBy(Sticker::getDtype, Collectors.counting()));
+        collect.putIfAbsent("a", 0L);
+        collect.putIfAbsent("b", 0L);
+        collect.putIfAbsent("c", 0L);
+        return collect;
     }
 }

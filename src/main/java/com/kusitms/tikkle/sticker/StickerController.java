@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/sticker")
@@ -31,5 +33,11 @@ public class StickerController {
     public CommonResponse getStickerCheckByMemoAndDtype(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("memo_id") Long memoId, @PathVariable("dtype") String dtype) {
         Long stickerId = stickerService.getStickerCheckByMemoAndDtype(customUserDetails, memoId, dtype);
         return responseService.getDataResponse(stickerId);
+    }
+
+    @GetMapping("/received")
+    public CommonResponse getStickerReceivedByAccount(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Map<String, Long> collect = stickerService.getStickerReceivedByAccount(customUserDetails);
+        return responseService.getDataResponse(collect);
     }
 }
