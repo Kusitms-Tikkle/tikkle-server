@@ -37,7 +37,10 @@ public enum CustomExceptionStatus {
     FILE_WRONG_TYPE(false, 2071,  "잘못된 형식의 파일입니다."),
 
     // memo
-    MEMO_NOT_FOUND(false, 2080, "기록을 찾을 수 없습니다.");
+    MEMO_NOT_FOUND(false, 2080, "기록을 찾을 수 없습니다."),
+
+    // sticker
+    STICKER_NOT_FOUND(false, 2090, "스티커를 찾을 수 없습니다.");
 
 
 
