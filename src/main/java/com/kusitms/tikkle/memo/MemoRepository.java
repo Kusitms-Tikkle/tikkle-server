@@ -1,6 +1,5 @@
 package com.kusitms.tikkle.memo;
 
-import com.kusitms.tikkle.sticker.Sticker;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

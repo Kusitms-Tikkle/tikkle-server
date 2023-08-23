@@ -9,12 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemoWithTodoResponseDto {
     private Long todoId;
+    private boolean isChecked;
     private String title;
     private String color;
     private MemoDto memo;
 
-    public MemoWithTodoResponseDto(Long id, String title, String color) {
+    public MemoWithTodoResponseDto(Long id, boolean isChecked, String title, String color) {
         this.todoId = id;
+        this.isChecked = isChecked;
         this.title = title;
         this.color = color;
     }

@@ -85,7 +85,7 @@ public class MemoService {
         List<Todo> todos = todoRepository.findByAccountIdAndDate(account.getId(), date);
         List<MemoWithTodoResponseDto> responseDtos = new ArrayList<>();
         for(Todo todo : todos) {
-            MemoWithTodoResponseDto dto = new MemoWithTodoResponseDto(todo.getId(), todo.getParticipateMission().getMission().getTitle(), todo.getParticipateMission().getMission().getChallenge().getColor());
+            MemoWithTodoResponseDto dto = new MemoWithTodoResponseDto(todo.getId(), todo.isChecked(), todo.getParticipateMission().getMission().getTitle(), todo.getParticipateMission().getMission().getChallenge().getColor());
             Optional<Memo> memo = memoRepository.findByTodoId(todo.getId());
             if(memo.isPresent()) {
                 MemoDto memoDto = new MemoDto(memo.get().getId(), memo.get().getContent(), memo.get().getImageUrl(), memo.get().isPrivate(), 1, 1, 1);
