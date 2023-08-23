@@ -26,4 +26,10 @@ public class StickerController {
         stickerService.deleteSticker(customUserDetails, stickerId);
         return responseService.getSuccessResponse();
     }
+
+    @GetMapping("/{memo_id}/{dtype}")
+    public CommonResponse getStickerCheckByMemoAndDtype(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("memo_id") Long memoId, @PathVariable("dtype") String dtype) {
+        Long stickerId = stickerService.getStickerCheckByMemoAndDtype(customUserDetails, memoId, dtype);
+        return responseService.getDataResponse(stickerId);
+    }
 }
