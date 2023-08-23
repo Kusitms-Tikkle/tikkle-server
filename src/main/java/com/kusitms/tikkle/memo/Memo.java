@@ -40,7 +40,7 @@ public class Memo {
     private Account account;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "memo", orphanRemoval = true)
+    @OneToMany(mappedBy = "memo", orphanRemoval = true,  cascade = CascadeType.REMOVE)
     private List<Sticker> stickerList = new ArrayList<>();
 
     public static Memo createMemo(Account account, Todo todo, String content, String image) {

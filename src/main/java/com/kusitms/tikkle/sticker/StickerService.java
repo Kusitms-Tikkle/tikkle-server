@@ -30,4 +30,13 @@ public class StickerService {
         Sticker sticker = Sticker.createSticker(account, memo, dtype);
         stickerRepository.save(sticker);
     }
+
+    @Transactional
+    public void deleteSticker(CustomUserDetails customUserDetails, Long stickerId) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Sticker sticker = stickerRepository.findById(stickerId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.STICKER_NOT_FOUND));
+        stickerRepository.delete(sticker);
+    }
 }

@@ -5,10 +5,7 @@ import com.kusitms.tikkle.configure.response.ResponseService;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +18,12 @@ public class StickerController {
     @PostMapping("/{memo_id}/{dtype}")
     public CommonResponse postStickerByDtype(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("memo_id") Long memoId, @PathVariable("dtype") String dtype) {
         stickerService.postStickerByDtype(customUserDetails, memoId, dtype);
+        return responseService.getSuccessResponse();
+    }
+
+    @DeleteMapping("/{sticker_id}")
+    public CommonResponse deleteSticker(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("sticker_id") Long stickerId) {
+        stickerService.deleteSticker(customUserDetails, stickerId);
         return responseService.getSuccessResponse();
     }
 }
