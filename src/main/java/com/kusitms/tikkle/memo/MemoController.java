@@ -3,6 +3,7 @@ package com.kusitms.tikkle.memo;
 import com.kusitms.tikkle.configure.response.CommonResponse;
 import com.kusitms.tikkle.configure.response.ResponseService;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
+import com.kusitms.tikkle.memo.dto.MemoAllDto;
 import com.kusitms.tikkle.memo.dto.MemoRequestDto;
 import com.kusitms.tikkle.memo.dto.MemoWithTodoResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,12 @@ public class MemoController {
     @GetMapping("/{date}")
     public CommonResponse getMyMemosByDate(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("date") String date) {
         List<MemoWithTodoResponseDto> dtoList = memoService.getMyMemosByDate(customUserDetails, date);
+        return responseService.getDataResponse(dtoList);
+    }
+
+    @GetMapping()
+    public CommonResponse getPublicMemo(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<MemoAllDto> dtoList = memoService.getPublicMemo(customUserDetails);
         return responseService.getDataResponse(dtoList);
     }
 }
