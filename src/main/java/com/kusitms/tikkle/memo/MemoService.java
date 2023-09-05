@@ -112,15 +112,16 @@ public class MemoService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
         memo.setImageUrl(null);
         memoRepository.save(memo);
+    }
 
-    public List<MemoAllDto> getPublicMemo(CustomUserDetails customUserDetails) {
-        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
-                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
-        List<Memo> memos = memoRepository.findByIsPrivateFalse();
-        List<MemoAllDto> collect = memos.stream()
-                .map(m -> new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle()))
-                .collect(Collectors.toList());
-        return collect;
+    public List<MemoAllDto> getPublicMemo(CustomUserDetails customUserDetails){
+            Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+            List<Memo> memos = memoRepository.findByIsPrivateFalse();
+            List<MemoAllDto> collect = memos.stream()
+                    .map(m -> new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle()))
+                    .collect(Collectors.toList());
+            return collect;
 
     }
 }
