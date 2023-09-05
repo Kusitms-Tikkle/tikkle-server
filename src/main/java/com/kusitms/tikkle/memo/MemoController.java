@@ -50,4 +50,10 @@ public class MemoController {
         List<MemoWithTodoResponseDto> dtoList = memoService.getMyMemosByDate(customUserDetails, date);
         return responseService.getDataResponse(dtoList);
     }
+
+    @DeleteMapping("/{id}/image")
+    public CommonResponse deleteMemoImage(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        memoService.deleteMemoImage(customUserDetails, id);
+        return responseService.getSuccessResponse();
+    }
 }

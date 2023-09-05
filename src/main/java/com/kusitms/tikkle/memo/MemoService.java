@@ -96,4 +96,13 @@ public class MemoService {
         return responseDtos;
     }
 
+    @Transactional
+    public void deleteMemoImage(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        memo.setImageUrl(null);
+        memoRepository.save(memo);
+    }
 }
