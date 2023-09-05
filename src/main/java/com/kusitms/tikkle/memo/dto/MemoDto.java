@@ -12,7 +12,7 @@ public class MemoDto {
     private String content;
     private String image;
     private boolean isPrivate;
-    private int sticker1;
-    private int sticker2;
-    private int sticker3;
+    private Long sticker1;
+    private Long sticker2;
+    private Long sticker3;
 }

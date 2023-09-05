@@ -7,9 +7,11 @@ import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.s3.S3Uploader;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
+import com.kusitms.tikkle.memo.dto.MemoAllDto;
 import com.kusitms.tikkle.memo.dto.MemoDto;
 import com.kusitms.tikkle.memo.dto.MemoRequestDto;
 import com.kusitms.tikkle.memo.dto.MemoWithTodoResponseDto;
+import com.kusitms.tikkle.sticker.Sticker;
 import com.kusitms.tikkle.todo.Todo;
 import com.kusitms.tikkle.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -88,13 +92,17 @@ public class MemoService {
             MemoWithTodoResponseDto dto = new MemoWithTodoResponseDto(todo.getId(), todo.isChecked(), todo.getParticipateMission().getMission().getTitle(), todo.getParticipateMission().getMission().getChallenge().getColor());
             Optional<Memo> memo = memoRepository.findByTodoId(todo.getId());
             if(memo.isPresent()) {
-                MemoDto memoDto = new MemoDto(memo.get().getId(), memo.get().getContent(), memo.get().getImageUrl(), memo.get().isPrivate(), 1, 1, 1);
+                Memo m = memo.get();
+                Map<String, Long> collect = m.getStickerList().stream()
+                        .collect(Collectors.groupingBy(Sticker::getDtype, Collectors.counting()));
+                MemoDto memoDto = new MemoDto(m.getId(), m.getContent(), m.getImageUrl(), m.isPrivate(), collect.get("a"), collect.get("b"), collect.get("c"));
                 dto.setMemo(memoDto);
             }
             responseDtos.add(dto);
         }
         return responseDtos;
     }
+
 
     @Transactional
     public void deleteMemoImage(CustomUserDetails customUserDetails, Long id) {
@@ -104,5 +112,15 @@ public class MemoService {
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
         memo.setImageUrl(null);
         memoRepository.save(memo);
+
+    public List<MemoAllDto> getPublicMemo(CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<Memo> memos = memoRepository.findByIsPrivateFalse();
+        List<MemoAllDto> collect = memos.stream()
+                .map(m -> new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle()))
+                .collect(Collectors.toList());
+        return collect;
+
     }
 }
