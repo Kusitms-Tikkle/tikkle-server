@@ -103,6 +103,16 @@ public class MemoService {
         return responseDtos;
     }
 
+
+    @Transactional
+    public void deleteMemoImage(CustomUserDetails customUserDetails, Long id) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.MEMO_NOT_FOUND));
+        memo.setImageUrl(null);
+        memoRepository.save(memo);
+
     public List<MemoAllDto> getPublicMemo(CustomUserDetails customUserDetails) {
         Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
@@ -111,5 +121,6 @@ public class MemoService {
                 .map(m -> new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle()))
                 .collect(Collectors.toList());
         return collect;
+
     }
 }

@@ -52,9 +52,15 @@ public class MemoController {
         return responseService.getDataResponse(dtoList);
     }
 
+    @DeleteMapping("/{id}/image")
+    public CommonResponse deleteMemoImage(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable(value = "id") Long id) {
+        memoService.deleteMemoImage(customUserDetails, id);
+        return responseService.getSuccessResponse();
+
     @GetMapping()
     public CommonResponse getPublicMemo(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<MemoAllDto> dtoList = memoService.getPublicMemo(customUserDetails);
         return responseService.getDataResponse(dtoList);
+
     }
 }

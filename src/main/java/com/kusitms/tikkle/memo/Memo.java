@@ -67,4 +67,8 @@ public class Memo {
             this.imageUrl = image;
         }
     }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
