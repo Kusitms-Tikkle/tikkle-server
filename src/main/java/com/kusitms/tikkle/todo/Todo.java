@@ -2,6 +2,7 @@ package com.kusitms.tikkle.todo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kusitms.tikkle.account.entity.Account;
+import com.kusitms.tikkle.memo.Memo;
 import com.kusitms.tikkle.mission.Day;
 import com.kusitms.tikkle.participate_mission.ParticipateMission;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,9 @@ public class Todo {
     @JoinColumn(name = "participate_mission_id")
     @JsonIgnore
     private ParticipateMission participateMission;
+
+    @OneToOne(mappedBy = "todo", cascade = CascadeType.REMOVE)
+    private Memo memo;
 
     public void setAccount(Account account) {
         this.account = account;
