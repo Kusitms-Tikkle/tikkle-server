@@ -7,6 +7,7 @@ import com.kusitms.tikkle.configure.response.exception.CustomException;
 import com.kusitms.tikkle.configure.response.exception.CustomExceptionStatus;
 import com.kusitms.tikkle.configure.security.authentication.CustomUserDetails;
 import com.kusitms.tikkle.todo.dto.todoRes;
+import com.kusitms.tikkle.todo.dto.todoResWithMemo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,4 +45,13 @@ public class TodoService {
         todo.toggleIsCheck();
     }
 
+    public List<todoResWithMemo> getTodoByDateUnWritten(CustomUserDetails customUserDetails, String date) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<Todo> todoList = todoRepository.findUnWrittedTodoByAccountIdAndDate(account.getId(), date);
+
+        List<todoResWithMemo> collect = todoList.stream().map(t -> new todoResWithMemo(t.getId(), t.getParticipateMission().getMission().getTitle()))
+                .collect(Collectors.toList());
+        return collect;
+    }
 }
