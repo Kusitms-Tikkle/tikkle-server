@@ -10,8 +10,8 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByAccountIdAndDate(Long id, String date);
     List<Todo> findByDate(String date);
 
-    @Query(value = "SELECT * FROM Todo t " +
-            "LEFT JOIN Memo m ON t.todo_id = m.todo_id " +
+    @Query(value = "SELECT * FROM todo t " +
+            "LEFT JOIN memo m ON t.todo_id = m.todo_id " +
             "WHERE m.memo_id IS NULL " +
             "AND t.date = :date " +
             "AND t.account_id = :account_id", nativeQuery = true)
