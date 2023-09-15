@@ -43,13 +43,19 @@ public class Memo {
     @OneToMany(mappedBy = "memo", orphanRemoval = true,  cascade = CascadeType.REMOVE)
     private List<Sticker> stickerList = new ArrayList<>();
 
+    // 연관관계 편의 메서드
+    public void setAccount(Account account) {
+        this.account = account;
+        account.getMemoList().add(this);
+    }
+
     public static Memo createMemo(Account account, Todo todo, String content, String image) {
         Memo m = new Memo();
-        m.account = account;
         m.todo = todo;
         m.content = content;
         m.imageUrl = image;
         m.isPrivate = false;
+        m.setAccount(account);
         return m;
     }
 
