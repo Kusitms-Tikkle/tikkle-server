@@ -23,7 +23,7 @@ public class AccountController {
     private final ResponseService responseService;
 
     @PostMapping("/login/extraInfo/{id}")
-    public DataResponse<LoginResponse> login(@PathVariable(value = "id") Long id, @RequestBody LoginRequest request) {
+    public DataResponse<LoginResponse> login(@PathVariable(value = "id") Long id, @RequestBody(required = false) LoginRequest request) {
         LoginResponse loginResponse = accountService.setExtraInfo(id, request);
         return responseService.getDataResponse(loginResponse);
     }
