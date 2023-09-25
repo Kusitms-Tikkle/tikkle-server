@@ -38,11 +38,16 @@ public class AccountService {
         Account account = null;
         if(byId.isPresent()) account = byId.get();
 
-        // 회원가입 완료
-        Account updateAccount = account.updateExtraInfo(request.getNickname(), request.isChecked(), Status.VALID);
-        Account save = accountRepository.save(updateAccount);
-        String token = jwtTokenProvider.createToken(save.getEmail(), save.getRole());
-        return new LoginResponse("SignIn", account, token);
+        if(request!=null) {
+            // 회원가입 완료
+            Account updateAccount = account.updateExtraInfo(request.getNickname(), request.isChecked(), Status.VALID);
+            Account save = accountRepository.save(updateAccount);
+            String token = jwtTokenProvider.createToken(save.getEmail(), save.getRole());
+            return new LoginResponse("SignIn", account, token);
+        } else {
+            String token = jwtTokenProvider.createToken(byId.get().getEmail(), byId.get().getRole());
+            return new LoginResponse("SignIn", account, token);
+        }
     }
 
     public boolean checkNicknameDuplicate(String nickname) {
