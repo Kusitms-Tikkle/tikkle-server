@@ -12,6 +12,7 @@ import com.kusitms.tikkle.memo.dto.MemoDto;
 import com.kusitms.tikkle.memo.dto.MemoRequestDto;
 import com.kusitms.tikkle.memo.dto.MemoWithTodoResponseDto;
 import com.kusitms.tikkle.sticker.Sticker;
+import com.kusitms.tikkle.sticker.StickerRepository;
 import com.kusitms.tikkle.todo.Todo;
 import com.kusitms.tikkle.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class MemoService {
     private final MemoRepository memoRepository;
     private final AccountRepository accountRepository;
     private final TodoRepository todoRepository;
+    private final StickerRepository stickerRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
@@ -115,12 +117,19 @@ public class MemoService {
     }
 
     public List<MemoAllDto> getPublicMemo(CustomUserDetails customUserDetails){
-            Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getEmail(), Status.VALID)
                     .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
-            List<Memo> memos = memoRepository.findByIsPrivateFalse();
-            List<MemoAllDto> collect = memos.stream()
-                    .map(m -> new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle()))
-                    .collect(Collectors.toList());
+        List<Memo> memos = memoRepository.findByIsPrivateFalse();
+        List<MemoAllDto> collect = memos.stream()
+                    .map(m -> {
+                        Optional<Sticker> a = stickerRepository.findByAccountIdAndMemoIdAndDtype(account.getId(), m.getId(), "a");
+                        Long stickerA = a.map(Sticker::getId).orElse(0L);
+                        Optional<Sticker> b = stickerRepository.findByAccountIdAndMemoIdAndDtype(account.getId(), m.getId(), "b");
+                        Long stickerB = b.map(Sticker::getId).orElse(0L);
+                        Optional<Sticker> c = stickerRepository.findByAccountIdAndMemoIdAndDtype(account.getId(), m.getId(), "c");
+                        Long stickerC = c.map(Sticker::getId).orElse(0L);
+                    return new MemoAllDto(m.getId(), m.getContent(), m.getImageUrl(), m.getAccount().getNickname(), m.getTodo().getParticipateMission().getMission().getTitle(), stickerA, stickerB, stickerC);
+                    }).collect(Collectors.toList());
             return collect;
 
     }
