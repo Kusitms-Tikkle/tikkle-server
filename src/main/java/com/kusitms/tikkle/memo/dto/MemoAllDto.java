@@ -13,4 +13,7 @@ public class MemoAllDto {
     public String imageUrl;
     public String nickname;
     public String missionTitle;
+    public Long stickerA;
+    public Long stickerB;
+    public Long stickerC;
 }
